@@ -1,0 +1,17 @@
+<!-- extends is for inheriting from the base.html -->
+{% extends 'base/base.html' %}
+{% block page_content %}
+<div class="row justify-content-center my-5">
+    <div class="col-md-5">
+        <h1>Page Not Found</h1>
+        <p>Make sure you are connected to the internet, or you are entering a valid city name</p>
+        <div style="display: flex;
+                justify-content: center;">
+            <img style="width: 70%;" id="sad-cloud"
+                 src="https://media4.giphy.com/media/MBmib5X238MxLg6B9N/giphy.gif?cid=6c09b95204a7fd8b8b1aa3d1c5247a53f97c7070970a4c74&rid=giphy.gif&ct=s"
+                 alt="sad cloud">
+        </div>
+        <a href="{% url 'index' %}" class="btn btn-secondary">Go Home</a>
+    </div>
+</div>
+{% endblock %}

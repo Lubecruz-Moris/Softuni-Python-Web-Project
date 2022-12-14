@@ -1,0 +1,58 @@
+<!-- extends is for inheriting from the base.html -->
+{% extends 'base/base.html' %}
+{% block page_content %}
+    <div class="row justify-content-center my-5">
+        <div class="col-md-5">
+            <div class="mt-4 p-5 bg-success text-white rounded mb-3">
+                <h1>Weather&Pals</h1>
+            </div>
+            <form action="." method="POST">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" required class="form-control" name="city" placeholder="Search City.......">
+                    <div class="input-group-append">
+                        <button class="btn btn-success" type="submit">
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <hr>
+            <div class="card">
+                <div class="card-body">
+                    {% include 'common/partials/weather-card.html' %}
+                    <div class="bottom">
+                        <div class="actionBtns">
+                            <div class="card-symbol float right">
+                                <link rel="stylesheet"
+                                      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+                                <span class="fa fa-star">
+{#                                <a href="{% url 'favourite city' city_name=city_weather_update.city %}"></a>#}
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            {% for city_weather_update in cities_favourite_weather_update %}
+                <div class="card">
+                    <div class="card-body">
+                        {% include 'common/partials/weather-card.html' %}
+                        <div class="bottom">
+                            <div class="actionBtns">
+                                <div class="card-text float end">
+                                    <link rel="stylesheet"
+                                          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+                                    <span class="fa fa-star checked" style="checked: orange">
+                                            <a href="{% url 'favourite city' city_name=city_weather_update.city %}"></a>
+                                        </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
