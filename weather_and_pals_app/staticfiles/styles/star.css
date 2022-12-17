@@ -1,0 +1,21 @@
+
+        .checked {
+            color: orange
+        }
+
+
+
+        .fa-star:link {
+            color: black;
+        }
+
+        .fa-star:visited {
+            color: black;
+        }
+
+
+        .fa-star:hover {
+            color: orange;
+        }
+
+

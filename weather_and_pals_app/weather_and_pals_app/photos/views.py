@@ -4,28 +4,24 @@ from django.shortcuts import render
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
+from django.views import generic as views
 
 from weather_and_pals_app.common.forms import PhotoCommentForm
-from weather_and_pals_app.common.models import PhotoLike
 from weather_and_pals_app.photos.forms import PhotoCreateForm, PhotoEditForm, PhotoDeleteForm
 from weather_and_pals_app.photos.models import Photo
 
 UserModel = get_user_model()
 
+
 def details_photo(request, pk):
     photo = Photo.objects.filter(pk=pk) \
         .get()
+
     try:
         user = UserModel.objects.filter(pk=request.user.pk).get()
-        user_liked_photos = PhotoLike.objects.filter(photo=photo, user=user)
     except UserModel.DoesNotExist:
         user = None
-        user_liked_photos = False
-
-
-
-
 
     comment_form = PhotoCommentForm(request.POST)
     context = {
@@ -33,8 +29,6 @@ def details_photo(request, pk):
         'photo': photo,
         'user': user,
         'comment_form': comment_form,
-        'has_user_liked_photo': user_liked_photos,
-        'likes_count': photo.photolike_set.count(),
         'is_owner': request.user == photo.user,
     }
 
@@ -106,4 +100,5 @@ def delete_photo(request, pk):
         template_path='photos/photo-delete-page.html',
         pk=pk,
     )
+
 

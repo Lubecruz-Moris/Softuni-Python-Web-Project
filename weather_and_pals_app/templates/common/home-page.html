@@ -1,10 +1,14 @@
 <!-- extends is for inheriting from the base.html -->
 {% extends 'base/base.html' %}
+{% load static %}
 {% block page_content %}
+<link rel="stylesheet" href="{% static '/styles/star.css' %}">
+
+
     <div class="row justify-content-center my-5">
         <div class="col-md-5">
             <div class="mt-4 p-5 bg-success text-white rounded mb-3">
-                <h1>Weather&Pals</h1>
+                <h1>What's the weather like?</h1>
             </div>
             <form action="." method="POST">
                 {% csrf_token %}
@@ -17,42 +21,76 @@
                     </div>
                 </div>
             </form>
+        </div>
+        <div class="col-9">
             <hr>
             <div class="card">
+                {% if request.method == "POST" %}
                 <div class="card-body">
                     {% include 'common/partials/weather-card.html' %}
-                    <div class="bottom">
-                        <div class="actionBtns">
-                            <div class="card-symbol float right">
-                                <link rel="stylesheet"
-                                      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-                                <span class="fa fa-star">
-{#                                <a href="{% url 'favourite city' city_name=city_weather_update.city %}"></a>#}
-                            </span>
+
+
+                        <div class="bottom">
+                            <div class="actionBtns">
+                                <div class="card-symbol float-end">
+                                    <link rel="stylesheet"
+                                          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+                                    <a href="{% url 'favourite city' city_name=city_weather_update.city %}">
+                                        {% if not is_city_in_favourites %}
+                                            <span class="fa fa-star">
+
+                                        {% else %}
+                                            <span class="fa fa-star checked">
+
+
+                                        {% endif %}
+                                        </span>
+                                    </a>
+
+                                </div>
                             </div>
                         </div>
-                    </div>
                 </div>
+                    {% endif %}
+
             </div>
             <hr>
+        {% if cities_favourite_weather_update %}
+
+        <div class="headline">
+            <h2>Favourites</h2>
+        </div>
+        {% endif %}
             {% for city_weather_update in cities_favourite_weather_update %}
                 <div class="card">
                     <div class="card-body">
                         {% include 'common/partials/weather-card.html' %}
                         <div class="bottom">
                             <div class="actionBtns">
-                                <div class="card-text float end">
+                                <div class="card-text float-end">
                                     <link rel="stylesheet"
                                           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-                                    <span class="fa fa-star checked" style="checked: orange">
-                                            <a href="{% url 'favourite city' city_name=city_weather_update.city %}"></a>
-                                        </span>
+                                    <a href="{% url 'favourite city' city_name=city_weather_update.city %}">
+                                        <span class="fa fa-star checked">
+
+                                    </span>
+                                    </a>
                                 </div>
+
                             </div>
+
                         </div>
+
                     </div>
                 </div>
             {% endfor %}
+        <div class="headline">
+        <h1>User Publications</h1>
         </div>
-    </div>
+        {% for photo in photos %}
+            {% include 'partials/photo-item.html' %}
+            <br>
+        {% endfor %}
+        </div>
+</div>
 {% endblock %}

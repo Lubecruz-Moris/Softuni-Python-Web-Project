@@ -13,11 +13,11 @@
                     <p>{{ object.username }}</p>
                     {% if is_owner %}
                         <a href="{% url 'edit user' pk=object.pk %}">
-                            <img class="edit-img" src="{% static 'images/edit-pen-icon-6.jpg' %}" alt="edit button">
+                            <img class="edit-img" src="{% static 'images/edit-pen-icon-6.png' %}" alt="edit button">
                         </a>
 
                         <a href="{% url 'delete user' pk=object.pk %}">
-                            <img class="bin-img" src="{% static 'images/icon-remove-22.jpg' %}" alt="bin button">
+                            <img class="bin-img" src="{% static 'images/icon-remove-22.png' %}" alt="bin button">
                         </a>
                     {% endif %}
                 </div>

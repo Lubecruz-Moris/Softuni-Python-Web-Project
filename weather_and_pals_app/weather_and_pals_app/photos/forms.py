@@ -21,11 +21,11 @@ class PhotoEditForm(PhotoBaseForm):
         exclude = ('publication_date', 'photo', 'user')
 
 
-class PhotoDeleteForm(DisabledFormMixin, PhotoBaseForm):
-    disabled_fields = '__all__'
+class PhotoDeleteForm(PhotoBaseForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.__set_disabled_fields()
 
     def save(self, commit=True):
         if commit:
@@ -40,3 +40,8 @@ class PhotoDeleteForm(DisabledFormMixin, PhotoBaseForm):
             self.instance.delete()
 
         return self.instance
+    def __set_disabled_fields(self):
+        for _, field in self.fields.items():
+            field.widget.attrs['readonly'] = True
+            field.required = False
+            field.widget.attrs['disabled'] = True

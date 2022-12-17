@@ -8,8 +8,6 @@ from django.contrib.auth import views as auth_views, get_user_model, login
 
 from weather_and_pals_app.accounts.forms import UserCreateForm, UserEditForm
 
-
-
 UserModel = get_user_model()
 
 
@@ -21,6 +19,7 @@ class SignUpView(views.CreateView):
     template_name = 'accounts/register-page.html'
     form_class = UserCreateForm
     success_url = reverse_lazy('index')
+
 
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
@@ -80,3 +79,4 @@ class UserDeleteView(views.DeleteView):
     template_name = 'accounts/profile-delete-page.html'
     model = UserModel
     success_url = reverse_lazy('index')
+

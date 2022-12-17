@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'weather_and_pals_app.accounts',
     'weather_and_pals_app.common',
     'weather_and_pals_app.photos',
+    'weather_and_pals_app.core'
 ]
 
 MIDDLEWARE = [
@@ -115,7 +116,7 @@ STATICFILES_DIRS = (
     BASE_DIR / 'staticfiles',
 )
 
-# STATIC_ROOT = '/tmp/weather_and_pals/staticfiles'
+# STATIC_ROOT = '/tmp/weather_and_pals_app/staticfiles'
 
 MEDIA_URL = '/media/'
 

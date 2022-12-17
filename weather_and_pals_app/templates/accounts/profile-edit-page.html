@@ -2,7 +2,7 @@
 {% load static %}
 {% load cloudinary %}
 {% block page_content %}
-    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/profile.css' %}">
     <div class="edit-delete">
         <h2>Edit Profile</h2>
         <form method="post" action="{% url 'edit user' pk=object.pk %}">

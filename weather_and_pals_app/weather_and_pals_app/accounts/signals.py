@@ -25,3 +25,13 @@ def send_email_on_successful_sign_up(instance, created, **kwargs):
         from_email=settings.DEFAULT_FROM_EMAIL,
         recipient_list=(instance.email,),
     )
+
+
+@receiver(models.signals.post_delete, sender=UserModel)
+def handle_deleted_profile(sender, instance, **kwargs):
+    if instance.shipper:
+        instance.shipper.delete()
+    if instance.carrier:
+        instance.carrier.delete()
+    if instance.affiliat:
+        instance.affiliat.delete()

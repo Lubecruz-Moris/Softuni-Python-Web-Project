@@ -43,7 +43,7 @@ class Photo(StrFromFieldsMixin, models.Model):
 
     user = models.ForeignKey(
         UserModel,
-        on_delete=models.RESTRICT,
+        on_delete=models.CASCADE,
     )
 
     tagged_users = models.ManyToManyField(

@@ -1,9 +1,10 @@
 {% load static %}
+{% load photo_utils %}
+
 
 <div class="card">
     <div class="top">
         <div class="userDetails">
-            <!-- Link to User Profile Page -->
             <a href="{% url 'details user' pk=photo.user.pk %}">
                 <div class="profilepic">
                     <div class="profile_img">
@@ -26,11 +27,12 @@
                 {% if photo.location %}
                     <span>{{ photo.location }}</span>
                 {% endif %}
+
             </h3>
         </div>
     </div>
 
-    <div class="imgBx" id="{{ photo.pk }}">
+    <div class="imgBx" id="photo-{{ photo.pk }}">
         <img src="{{ photo.photo.url }}"
              alt="photo of the users {{ photo.tagged_users.all|join:', ' }}"
              class="cover">
@@ -41,7 +43,8 @@
             <div class="left">
                             <span class="heart">
                                 <a href="{% url 'like photo' pk=photo.pk %}">
-                                    {% if has_user_liked_photo.all %}
+                                    {% apply_user_liked_photo user photo as has_user_liked_photo %}
+                                    {% if  has_user_liked_photo %}
                                         <svg style="color: red"
                                              xmlns="http://www.w3.org/2000/svg"
                                              width="24"
@@ -85,57 +88,82 @@
                             </span>
             </div>
         </div>
-        <p class="likes">{{ photo.likes_count }} likes</p>
+        <p class="likes">{% apply_likes_count photo %} likes</p>
 
-
-        <!-- Link to Photo Details Page -->
+        {% for user in photo.tagged_users.all %}
+            <a href="{% url 'details user' pk=user.pk %}">
+                <p class="message">
+                    <b>
+                        {% if user.get_full_name %}
+                            {{ user.get_full_name }}
+                        {% else %}
+                            {{ user.username }}
+                        {% endif %}
+                    </b>
+                </p>
+            </a>
+        {% endfor %}
         <a href="{% url 'details photo' pk=photo.pk %}">
             <h4 class="details">See details</h4>
         </a>
-
-        <!-- Date of Publication -->
+        <!-- Date of Publication or edit of the Photo -->
         <h5 class="postTime">{{ photo.publication_date }}</h5>
 
-        {% for comment in photo.photocomment_set.all %}
-            <div class="comments">
-                <div class="top">
-                    <div class="userDetails">
-                        <div class="comment-data">
-                            <div class="profilepic">
-                                <div class="profile_img">
-                                    <div class="image">
-                                        <img src="{{comment.user.profile_pic}}" alt="img8">
+
+        <!-- Start Add Comments Section -->
+        <div class="comments">
+            {% if photo.photocomment_set.all %}
+                {% for comment in photo.photocomment_set.all %}
+
+                    <div class="top">
+                        <div class="userDetails">
+                            <div class="comment-data">
+                                <div class="profilepic">
+                                    <div class="profile_img">
+                                        <div class="image">
+                                            <img src="{{ comment.user.profile_pic }}" alt="img8">
+                                        </div>
                                     </div>
                                 </div>
+                                <p>
+                                    <a href="{% url 'details user' pk=comment.user.pk %}">
+
+                                        {% if comment.user.get_full_name %}
+                                            {{ comment.user.get_full_name }}
+                                        {% else %}
+                                            {{ comment.user.username }}
+                                        {% endif %}
+                                    </a>
+                                    <!-- User Comment -->
+                                    {{ comment.text }}
+                                    {{ comment.publication_date }}
+
+                                </p>
                             </div>
-                            <p>
-                                {# TODO: fix with auth #}
-                                <a href="">{{ comment.user.username}}</a>
-                                <!-- User Comment -->
-                                {{ comment.text }}
-
-                            </p>
                         </div>
-                        <span>{{ comment.publication_date }}</span>
                     </div>
+
+                {% endfor %}
+            {% endif %}
+
+
+
+            <!-- Start Add Comments Form -->
+            <div class="addComments">
+                <div class="reaction">
+                    <h3>
+                        <i class="far fa-smile"></i>
+                    </h3>
                 </div>
+                <form method="post" action="{% url 'comment photo' pk=photo.pk %}">
+                    {{ comment_form }}
+                    <!-- Post Comments Button -->
+                    <button type="submit">Post</button>
+                    {% csrf_token %}
+                </form>
             </div>
-            <!-- End Comments Section -->
-        {% endfor %}
-
-
-        <div class="addComments">
-            <div class="reaction">
-                <h3>
-                    <i class="far fa-smile"></i>
-                </h3>
-            </div>
-            <form method="post" action="{% url 'comment photo' photo_id=photo.pk %}">
-                {{ comment_form }}
-                <button type="submit">Post</button>
-                {% csrf_token %}
-            </form>
-            </form>
-        </div>
+        </div>   <!-- End Add Comments Form -->
     </div>
+    <!-- End Add Comments Section -->
 </div>
+

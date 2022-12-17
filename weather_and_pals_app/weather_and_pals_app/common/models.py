@@ -22,28 +22,28 @@ class PhotoComment(models.Model):
 
     photo = models.ForeignKey(
         Photo,
-        on_delete=models.RESTRICT,
+        on_delete=models.CASCADE,
         null=False,
         blank=True,
     )
 
     user = models.ForeignKey(
         UserModel,
-        on_delete=models.RESTRICT,
+        on_delete=models.CASCADE,
     )
 
 
 class PhotoLike(models.Model):
     photo = models.ForeignKey(
         Photo,
-        on_delete=models.RESTRICT,
+        on_delete=models.CASCADE,
         null=False,
         blank=True,
     )
 
     user = models.ForeignKey(
         UserModel,
-        on_delete=models.RESTRICT,
+        on_delete=models.CASCADE,
     )
 
 
@@ -56,5 +56,5 @@ class CityFavourite(models.Model):
         )
     user = models.ForeignKey(
         UserModel,
-        on_delete=models.RESTRICT,
+        on_delete=models.CASCADE,
     )
